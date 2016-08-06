@@ -1,0 +1,183 @@
+<head>
+  <title>pentester</title>
+</head>
+
+<body>
+</body>
+
+
+<template name="main">
+
+
+  <div id="topmenu" style="{{#unless loggedin}}display:none{{/unless}}">
+    <div>
+      <select id="project">
+        {{#each projects}}
+          <option value="{{name}}" {{selectedProject name}}>{{name}}</option>
+        {{/each}}
+      </select>
+    </div>
+    {{> language}}
+
+    |
+    <a href="/">{{_ "list"}}</a> |
+    <a href="/new/vuln">{{_ "new_vuln"}}</a> |
+    <a href="/new/project">{{_ "new_project"}}</a> |
+    <a href="#" id="logout">{{_ "logout"}}</a>
+
+
+  </div>
+
+  <br/><br/>
+  
+  {{> yield}}
+</template>
+
+
+<template name="login">
+  <h2>{{_ "login"}}</h2>
+  <h3 style="color:red" id="login_error"></h3>
+    <form class="login">
+        <p>{{_ "email"}}: <input type="email" name="email"></p>
+        <p>{{_ "password"}}: <input type="password" name="password"></p>
+        <p><input type="submit" value="{{_ 'login_button'}}"></p>
+    </form>
+</template>
+
+<template name="language">
+  <div id="language">{{> i18n_dropdown}}</div>
+</template>
+
+<template name="list">
+
+  {{#each vulns}}
+    {{> vuln}}
+  {{/each}}
+</template>
+
+
+<template name="vuln">
+  <a href="/edit/vuln/{{_id}}"><h1>{{title}}</h1>
+  {{> cvss3}}
+  {{#each sections}}
+    <h2>{{name}}</h2>
+    <p>{{{content}}}</p>
+  {{/each}}
+  </a>
+</template>
+
+
+<template name="cvss3">
+  <div id="cvss3" style="{{#unless hasCvss}}display:none{{/unless}}">
+    <p id="cvssheader">CVSS v3 {{_ "score"}}: <span id="score">{{score}}</span></p>
+  {{#with cvss3}}
+  <table>
+    <tr>
+      <td>{{_ "metric"}}</td>
+      <td>{{_ "value"}}</td>
+      <td>{{_ "comment"}}</td>
+    </tr>
+    {{#each metrics}}
+    <tr>
+      <td>
+        <label title="{{description}}">{{name}}</label>
+      </td>
+      <td>
+        {{#each values}}
+          {{getSelectedText ../.. ../id value text}}
+        {{/each}}
+      </td>
+      <td>
+        {{getComment .. id}}
+      </td>
+    </tr>
+    {{/each}}
+
+  </table>
+  {{/with}}
+  </div>
+</template>
+
+<template name="edit_project">
+  Nazwa projektu: <input id="name" type="text" value="{{name}}" />
+  <button id="save">{{_ "save"}}</button>
+  <button id="delete">{{_ "delete"}}</button>
+</template>
+
+<template name="edit_vuln">
+  <!-- {{getvalue this}} -->
+  <div id="summer"></div>
+  <br/>Tytuł: <input id="title" type="text" value="{{title}}" />
+  <br/>Projekt: <input id="projectname" type="text" value="{{project}}" />
+  
+  {{> edit_cvss3}}<br/>
+  {{#each sections}}
+    
+    <input class="section_name" type="text" value="{{name}}" /><br/>
+    <div class="section_content" id="section_content{{@index}}">{{{content}}}</div><br/><br/>
+    <script>setupSummernote("section_content{{@index}}");</script>
+    
+    
+    {{/each}}
+    <div id="bottommenu">
+  <button id="add">{{_ "add_section"}}</button>  
+  <br/>
+  <button id="save">{{_ "save"}}</button>
+  <button id="delete">{{_ "delete"}}</button>
+  </div>
+</template>
+
+<template name="content">
+
+</template>
+
+<template name="edit_cvss3">
+  <br/>Has CVSS: <input type="checkbox" id="hasCvss" checked={{hasCvss}}><br/>
+  <div id="cvss3" style="{{#unless hasCvss}}display:none{{/unless}}">
+    <p id="cvssheader">CVSS v3 score: <span id="score">{{score}}</span></p>
+  {{#with cvss3}}
+  
+  <table>
+    <tr>
+      <td>{{_ "metric"}}</td>
+      <td>{{_ "value"}}</td>
+      <td>{{_ "comment"}}</td>
+    </tr>
+    {{#each metrics}}
+    <tr>
+      <td>
+        <label title="{{description}}">{{name}}</label>
+      </td>
+      <td>
+        <select id="{{id}}" class="{{id}}">
+          {{#each values}}
+            <option value="{{value}}" title="{{description}}" {{getSelected ../.. ../id value}}>{{text}}</option>
+          {{/each}}
+        </select>
+      </td>
+      <td class="comment">
+        <textarea class="{{id}}">{{getComment .. id}}</textarea>
+      </td>
+    </tr>
+    {{/each}}
+
+  </table>
+  {{/with}}
+  </div>
+</template>
+
+
+<template name="hello">
+  <button>Click Me</button>
+  <p>You've pressed the button {{counter}} times.</p>
+</template>
+
+<template name="info">
+  <h2>Learn Meteor!</h2>
+  <ul>
+    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
+    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
+    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
+    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
+  </ul>
+</template>

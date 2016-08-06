@@ -1,0 +1,88 @@
+/* CSS declarations go here */
+
+a {
+    text-decoration: none;
+    color:black;
+}
+
+a:hover {
+    text-decoration: none;
+    color:black;
+}
+
+
+table, th, td {
+   border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+#title {
+    font-size: 32px;
+    height: 36px;
+    font-weight: bold;    
+}
+
+.section_name,#cvssheader {
+    font-size: 24px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+}
+
+#topmenu {
+    left:0;
+    right:0;
+    top:0;
+    height:34px;
+    font-size:25px;
+    position: fixed;
+    background-color:lightgrey;
+    z-index: 100000;
+}
+
+#topmenu a:hover {
+    background-color: black;
+    color: lightgrey;
+}
+
+#bottommenu {
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background-color:lightgrey;
+    z-index: 100000;
+}
+
+#language {
+    position:absolute;
+    right:0;
+    top:0;
+    width:200px;
+}
+
+#project {
+    position: absolute;
+    right:200px;
+    top:0;
+    display: block;
+    width: 200px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: lightgrey;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.tap-i18n-dropdown .form-control {
+    background-color: lightgrey;
+}
+/* a:hover { */
+/*     text-decoration: underline; */
+/* } */

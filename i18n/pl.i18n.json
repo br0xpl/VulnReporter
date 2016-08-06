@@ -1,0 +1,23 @@
+{
+    "metric": "Metryka",
+    "value": "Wartość" ,
+    "comment": "Komentarz",
+    "document_changed": "Zmieniono dokument w międzyczasie! Odśwież aby nie nadpisać tamtych zmian.",
+    "importance": "Ważność",
+    "impact": "Wpływ",
+    "verify": "Metoda weryfikacji",
+    "recommendations": "Rekomendacje",
+    "vulnerability": "Podatność",
+    "add_section": "Dodaj sekcję",
+    "save": "Zapisz",
+    "delete": "Usuń",
+    "list": "Lista podatności",
+    "new_project": "Nowy projekt",
+    "new_vuln": "Nowa podatność",
+    "login_error": "Nie poprawny email lub hasło!",
+    "login": "Logowanie",
+    "login_button": "Zaloguj",
+    "password": "Hasło",
+    "email": "E-mail",
+    "logout": "Wyloguj"
+}
