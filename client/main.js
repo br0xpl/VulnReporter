@@ -51,7 +51,6 @@ Router.route('new', {
             },
             hasCvss: true,
             sections: [
-                { name: TAPi18n.__('importance'), contents: "" },
                 { name: TAPi18n.__('impact'), contents: "" },
                 { name: TAPi18n.__('verify'), contents: "" },
                 { name: TAPi18n.__('recommendations'), contents: "" },
@@ -200,12 +199,37 @@ Template.login.events({
 });
 
 
+var priorities=function () {
+    return [
+            {name:TAPi18n.__('i_critical'), value: "c"},
+            {name:TAPi18n.__('i_high'), value: "h"},
+            {name:TAPi18n.__('i_medium'), value: "m"},
+            {name:TAPi18n.__('i_low'), value: "l"},
+            {name:TAPi18n.__('i_info'), value: "i"},
+    ];
+};
 
+Template.vuln.helpers({
+    getImportanceName: function(i) {
+        var p = priorities();
+        for (n in p) {
+            if (p[n].value===i) return p[n].name;
+        }
+        return "";
+    },
+});
 
 Template.edit_vuln.helpers({
     hasCvss: function() {
         return this.hasCvss;
-    }
+    },
+    priorites: function() {
+        return priorities();
+    },
+    i_selected: function(val, opt) {
+        if (val===opt) return "selected";
+        return "";
+    },
 });
 
 setupSummernote = function(id) {
@@ -227,7 +251,6 @@ Template.edit_vuln.events({
         if (typeof this.sections === "undefined") this.sections=[];
         this.sections.push({ name: "New section", content: ""});
         vulnDeps.changed();
-        alert(TAPi18n.__('av'));
     },
     'click #save'(event, instance) {
         oldVuln = JSON.stringify(orderObject(this));
@@ -238,8 +261,18 @@ Template.edit_vuln.events({
         Vulns.remove(this._id);
         Router.go("/");
     },
+    'click #delete_section'(event, instance) {
+        var s = Template.parentData().sections;
+        var i = s.indexOf(this);
+        if (i!=-1) s.splice(i,1);
+        vulnDeps.changed();
+    },
     'change #hasCvss'(event, instance) {
         this.hasCvss= event.target.checked;
+        vulnDeps.changed();
+    },
+    'change #importance'(event, instance) {
+        this.importance= event.target.value;
         vulnDeps.changed();
     },
     'keyup .section_name'(event, instance) {

@@ -37,5 +37,10 @@
     "login_button": "Login",
     "password": "Password",
     "email": "E-mail",
-    "logout": "Logout"
+    "logout": "Logout",
+    "i_critical": "Critical",
+    "i_high": "High",
+    "i_medium": "Medium",
+    "i_low": "Low",
+    "i_info": "Informational"
 }

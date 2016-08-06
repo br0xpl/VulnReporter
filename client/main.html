@@ -13,7 +13,7 @@
     <div>
       <select id="project">
         {{#each projects}}
-          <option value="{{name}}" {{selectedProject name}}>{{name}}</option>
+          <option title="{{_id}}" value="{{name}}" {{selectedProject name}}>{{name}}</option>
         {{/each}}
       </select>
     </div>
@@ -58,7 +58,9 @@
 
 <template name="vuln">
   <a href="/edit/vuln/{{_id}}"><h1>{{title}}</h1>
-  {{> cvss3}}
+    {{> cvss3}}
+    <h2>{{_ "importance"}}</h2>
+    <p>{{getImportanceName importance}}</p>
   {{#each sections}}
     <h2>{{name}}</h2>
     <p>{{{content}}}</p>
@@ -111,9 +113,16 @@
   <br/>Projekt: <input id="projectname" type="text" value="{{project}}" />
   
   {{> edit_cvss3}}<br/>
+
+  <h2>{{_ "importance"}}:</h2><select id="importance">
+    {{#each priorites}}
+      <option value="{{value}}" {{i_selected ../importance value}}>{{name}}</option>
+    {{/each}}
+  </select><br/>
+  
   {{#each sections}}
     
-    <input class="section_name" type="text" value="{{name}}" /><br/>
+    <input class="section_name" type="text" value="{{name}}" /><button id="delete_section">{{_ "delete"}}</button><br/>
     <div class="section_content" id="section_content{{@index}}">{{{content}}}</div><br/><br/>
     <script>setupSummernote("section_content{{@index}}");</script>
     
