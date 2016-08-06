@@ -35,16 +35,42 @@ table {
     left:0;
     right:0;
     top:0;
-    height:34px;
+    height:68px;
     font-size:25px;
     position: fixed;
     background-color:lightgrey;
     z-index: 100000;
 }
 
+.hand {
+    cursor: pointer;
+}
+
+#main {
+    margin-top: 68px;
+}
+
+#menu {
+    position:absolute;
+    height:34px;
+    bottom:0px;
+    left:0px;
+}
+
 #topmenu a:hover {
     background-color: black;
     color: lightgrey;
+}
+
+#links {
+    position:absolute;
+    right:410px;
+    top:0px;
+    margin:0px;
+}
+
+#no_links {
+    margin-top: 9px;
 }
 
 #bottommenu {
@@ -65,19 +91,23 @@ table {
 
 #project {
     position: absolute;
-    right:200px;
+    right:205px;
     top:0;
     display: block;
     width: 200px;
     height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
     line-height: 1.42857143;
-    color: #555;
+    color: black;
     background-color: lightgrey;
     background-image: none;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+#language select {
+    font-size:25px;
+    padding:0;
+    color: black;
 }
 
 .tap-i18n-dropdown .form-control {

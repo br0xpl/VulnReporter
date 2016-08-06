@@ -106,13 +106,30 @@ Router.route('edit_project', {
     }
 });
 
+Session.setDefault("links", true);
+Deps.autorun(function() {
+    if (Session.get("links")) {
+        $('.vuln').addClass('hand');
+    } else {
+        $('.vuln').removeClass('hand');
+    }
+});
+
 Template.main.events({
     'change #project'(event, instance) {
         Session.set("project", event.target.value);
     },
     'click #logout'(event, instance) {
         Meteor.logout();
-    }
+    },
+    'change #no_links'(event, instance) {
+        Session.set("links", !$('#no_links')[0].checked);
+    },
+    'click .vuln'(events, instance) {
+        if (Session.get("links")) {
+            Router.go("/edit/vuln/"+this._id);
+        }
+    },
 });
 
 Template.edit_project.events({
@@ -179,7 +196,7 @@ Template.main.helpers({
         Session.setDefault("project",name);
         if (name===Session.get("project")) return "selected";
         return "";
-    },
+    }
 });
 
 Template.login.events({

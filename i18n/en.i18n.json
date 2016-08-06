@@ -42,5 +42,7 @@
     "i_high": "High",
     "i_medium": "Medium",
     "i_low": "Low",
-    "i_info": "Informational"
+    "i_info": "Informational",
+    "title": "VulnReporter",
+    "no_links": "No links"
 }

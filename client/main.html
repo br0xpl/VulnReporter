@@ -18,19 +18,27 @@
       </select>
     </div>
     {{> language}}
+    <div>
+      <div class="checkbox" id="links">
+        <label><input type="checkbox" id="no_links" value="">{{_ "no_links"}}</label>
+      </div>
+    </div>
 
-    |
+    <div id="menu">|
     <a href="/">{{_ "list"}}</a> |
     <a href="/new/vuln">{{_ "new_vuln"}}</a> |
     <a href="/new/project">{{_ "new_project"}}</a> |
-    <a href="#" id="logout">{{_ "logout"}}</a>
+    <a href="#" id="logout">{{_ "logout"}}</a> 
+    </div>
 
-
+    <b>{{_ "title"}}</b>
+    
   </div>
 
-  <br/><br/>
-  
-  {{> yield}}
+  <!-- <br/><br/> -->
+  <div id="main">
+    {{> yield}}
+  </div>
 </template>
 
 
@@ -57,7 +65,8 @@
 
 
 <template name="vuln">
-  <a href="/edit/vuln/{{_id}}"><h1>{{title}}</h1>
+  <div class="vuln hand">
+    <h1>{{title}}</h1>
     {{> cvss3}}
     <h2>{{_ "importance"}}</h2>
     <p>{{getImportanceName importance}}</p>
@@ -65,7 +74,7 @@
     <h2>{{name}}</h2>
     <p>{{{content}}}</p>
   {{/each}}
-  </a>
+  </div>
 </template>
 
 
@@ -108,8 +117,7 @@
 
 <template name="edit_vuln">
   <!-- {{getvalue this}} -->
-  <div id="summer"></div>
-  <br/>Tytuł: <input id="title" type="text" value="{{title}}" />
+  Tytuł: <input id="title" type="text" value="{{title}}" />
   <br/>Projekt: <input id="projectname" type="text" value="{{project}}" />
   
   {{> edit_cvss3}}<br/>
