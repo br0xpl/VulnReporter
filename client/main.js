@@ -38,6 +38,7 @@ Router.route('new', {
         var o = Vulns.insert({
             title: TAPi18n.__('vulnerability'),
             score: 0,
+            importance: 50,
             project: Session.get("project"),
             cvss3: {
                 "AV": { value: "N", comment: "" },
@@ -234,6 +235,10 @@ Template.vuln.helpers({
         }
         return "";
     },
+    links_hand: function () {
+        if (Session.get("links")) return "hand";
+        return "";
+    }
 });
 
 Template.edit_vuln.helpers({
@@ -279,9 +284,15 @@ Template.edit_vuln.events({
         Router.go("/");
     },
     'click #delete_section'(event, instance) {
-        var s = Template.parentData().sections;
-        var i = s.indexOf(this);
-        if (i!=-1) s.splice(i,1);
+        var p = Template.parentData();
+        var i = p.sections.indexOf(this);
+        if (i!=-1) {
+            var copy = p.sections.slice();
+            copy.splice(i,1);
+            p.sections = copy;
+        }
+        console.log($(event.target).data("id"));
+        //$("#"+$(event.target).data("id")).summernote("destroy");
         vulnDeps.changed();
     },
     'change #hasCvss'(event, instance) {
@@ -329,6 +340,10 @@ Router.route('default', {
 Template.list.helpers({
     vulns: function() {
         return Vulns.find({ project: Session.get("project") }, {sort: {importance: -1, score: -1}}).fetch();
+    },
+    links_checked: function() {
+        if (Session.get("links")) return "";
+        return "checked";
     },
 });
 

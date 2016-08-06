@@ -20,7 +20,7 @@
     {{> language}}
     <div>
       <div class="checkbox" id="links">
-        <label><input type="checkbox" id="no_links" value="">{{_ "no_links"}}</label>
+        <label><input type="checkbox" id="no_links" value="" {{links_checked}}>{{_ "no_links"}}</label>
       </div>
     </div>
 
@@ -65,7 +65,7 @@
 
 
 <template name="vuln">
-  <div class="vuln hand">
+  <div class="vuln {{links_hand}}">
     <h1>{{title}}</h1>
     {{> cvss3}}
     <h2>{{_ "importance"}}</h2>
@@ -129,11 +129,11 @@
   </select><br/>
   
   {{#each sections}}
-    
-    <input class="section_name" type="text" value="{{name}}" /><button id="delete_section">{{_ "delete"}}</button><br/>
+    <div>    
+    <input class="section_name" type="text" value="{{name}}" /><button id="delete_section" data-id="section_content{{@index}}">{{_ "delete"}}</button><br/>
     <div class="section_content" id="section_content{{@index}}">{{{content}}}</div><br/><br/>
     <script>setupSummernote("section_content{{@index}}");</script>
-    
+    </div>
     
     {{/each}}
     <div id="bottommenu">
