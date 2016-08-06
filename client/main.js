@@ -201,11 +201,11 @@ Template.login.events({
 
 var priorities=function () {
     return [
-            {name:TAPi18n.__('i_critical'), value: "c"},
-            {name:TAPi18n.__('i_high'), value: "h"},
-            {name:TAPi18n.__('i_medium'), value: "m"},
-            {name:TAPi18n.__('i_low'), value: "l"},
-            {name:TAPi18n.__('i_info'), value: "i"},
+            {name:TAPi18n.__('i_critical'), value: 50},
+            {name:TAPi18n.__('i_high'), value: 40},
+            {name:TAPi18n.__('i_medium'), value: 30},
+            {name:TAPi18n.__('i_low'), value: 20},
+            {name:TAPi18n.__('i_info'), value: 10},
     ];
 };
 
@@ -213,7 +213,7 @@ Template.vuln.helpers({
     getImportanceName: function(i) {
         var p = priorities();
         for (n in p) {
-            if (p[n].value===i) return p[n].name;
+            if (p[n].value==i) return p[n].name;
         }
         return "";
     },
