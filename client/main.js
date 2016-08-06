@@ -227,7 +227,7 @@ Template.edit_vuln.helpers({
         return priorities();
     },
     i_selected: function(val, opt) {
-        if (val===opt) return "selected";
+        if (val==opt) return "selected";
         return "";
     },
 });
@@ -311,7 +311,7 @@ Router.route('default', {
 
 Template.list.helpers({
     vulns: function() {
-        return Vulns.find({ project: Session.get("project") }).fetch();
+        return Vulns.find({ project: Session.get("project") }, {sort: {importance: -1, score: -1}}).fetch();
     },
 });
 
