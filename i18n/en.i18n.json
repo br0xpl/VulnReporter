@@ -48,5 +48,7 @@
     "title": "Title",
     "no": "No.",
     "project": "Project",
-    "export": "Export"
+    "export": "Export",
+    "cve": "CVE",
+    "owasptop10": "OWASP TOP 10"
 }

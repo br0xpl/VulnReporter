@@ -55,6 +55,8 @@ Router.route('new', {
                 { name: TAPi18n.__('impact'), contents: "" },
                 { name: TAPi18n.__('verify'), contents: "" },
                 { name: TAPi18n.__('recommendations'), contents: "" },
+                { name: TAPi18n.__('cve'), contents: "" },
+                { name: TAPi18n.__('owasptop10'), contents: "" },
             ]
         });
         Router.go('/edit/vuln/'+o);
