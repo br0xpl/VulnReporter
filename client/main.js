@@ -84,6 +84,29 @@ orderObject = function(unordered) {
 };
 
 
+Router.route('edit_current_project', {
+    name: 'edit_current_project',
+    path: '/edit/project',
+    template: 'edit_project',
+    data: function () {
+        projectDeps.depend();
+        if (typeof this.project === "undefined") {
+            this.project = Projects.findOne({name: Session.get("project")});
+            if (typeof this.project !== "undefined") oldProject=JSON.stringify(orderObject(this.project));
+        } else if (oldProject!==JSON.stringify(orderObject(Projects.findOne(Router.current().params._id)))) {
+            alert(TAPi18n.__('document_changed'));
+        }
+        return this.project;
+    },
+    onBeforeAction: function () {
+        var currentUser = Meteor.userId();
+        if(!currentUser){
+            Router.go('/login');
+        }
+        this.next();
+    }
+});
+
 Router.route('edit_project', {
     name: 'edit_project',
     path: '/edit/project/:_id',
@@ -107,7 +130,8 @@ Router.route('edit_project', {
     }
 });
 
-Session.setDefault("links", true);
+Session.setDefault("project", "");
+Session.setDefault("links", false);
 Deps.autorun(function() {
     if (Session.get("links")) {
         $('.vuln').addClass('hand');
@@ -123,8 +147,8 @@ Template.main.events({
     'click #logout'(event, instance) {
         Meteor.logout();
     },
-    'change #no_links'(event, instance) {
-        Session.set("links", !$('#no_links')[0].checked);
+    'change #links'(event, instance) {
+        Session.set("links", $('#links')[0].checked);
     },
     'click .vuln'(events, instance) {
         if (Session.get("links")) {
@@ -138,14 +162,17 @@ Template.edit_project.events({
         oldProject = JSON.stringify(orderObject(this));
         Projects.update(this._id, this);
         Router.go("/");
+        vulnProject.changed();
     },
     'click #delete'(event, instance) {
         Projects.remove(this._id);
         Router.go("/");
+        Session.set("project", "");
+        projectDeps.changed();
     },
     'keyup #name'(event, instance) {
         this.name = event.target.value;
-        vulnProject.changed();
+        projectDeps.changed();
     },
 });
 
@@ -194,7 +221,6 @@ Template.main.helpers({
         return false;
     },
     selectedProject: function(name) {
-        Session.setDefault("project",name);
         if (name===Session.get("project")) return "selected";
         return "";
     }
@@ -227,14 +253,41 @@ var priorities=function () {
     ];
 };
 
-Template.vuln.helpers({
-    getImportanceName: function(i) {
-        var p = priorities();
-        for (n in p) {
-            if (p[n].value==i) return p[n].name;
-        }
-        return "";
+Handlebars.registerHelper('getImportanceName', function (i) {
+    var p = priorities();
+    for (n in p) {
+        if (p[n].value==i) return p[n].name;
+    }
+    return i.toString();
+});
+
+Handlebars.registerHelper('getImportanceRGB', function (i) {
+    var p = priorities();
+    var max=0;
+    var min=999999;
+    for (n in p) {
+        if (p[n].value>max) max=p[n].value;
+        if (p[n].value<min) min=p[n].value;
+    }
+    max=max-min;
+    var GB=Math.round(255-(i-min)*255/max);
+    
+    return "RGB(255,"+GB.toString()+","+GB.toString()+")";
+});
+
+Template.list.helpers({
+    showProjectName: function() {
+        return (Session.get("project")=="");
+    }
+});
+
+Template.list.events({
+    'click .hand'(event, instance) {
+        Router.go($(event.target.parentElement).data("href"));
     },
+});
+
+Template.vuln.helpers({
     links_hand: function () {
         if (Session.get("links")) return "hand";
         return "";
@@ -300,7 +353,7 @@ Template.edit_vuln.events({
         vulnDeps.changed();
     },
     'change #importance'(event, instance) {
-        this.importance= event.target.value;
+        this.importance= parseInt(event.target.value);
         vulnDeps.changed();
     },
     'keyup .section_name'(event, instance) {
@@ -335,15 +388,35 @@ Router.route('default', {
     }
 });
 
+Router.route('export', {
+    path: '/export',
+    template: 'export',
+    onBeforeAction: function () {
+        var currentUser = Meteor.userId();
+        if(!currentUser){
+            Router.go('/login');
+        }
+        this.next();
+    }
+});
 
 
-Template.list.helpers({
-    vulns: function() {
-        return Vulns.find({ project: Session.get("project") }, {sort: {importance: -1, score: -1}}).fetch();
-    },
+Handlebars.registerHelper('vulns', function () {
+    projectDeps.depend();
+    if (Session.get("project")=="") return Vulns.find({ }, {sort: {importance: -1, score: -1}}).fetch(); 
+    return Vulns.find({ project: Session.get("project") }, {sort: {importance: -1, score: -1}}).fetch(); 
+});
+
+// Template.list.helpers({
+//     vulns: function() {
+//         return Vulns.find({ project: Session.get("project") }, {sort: {importance: -1}}).fetch(); 
+//     }, 
+// });
+
+Template.export.helpers({
     links_checked: function() {
-        if (Session.get("links")) return "";
-        return "checked";
+        if (Session.get("links")) return "checked";
+        return "";
     },
 });
 

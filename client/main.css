@@ -31,6 +31,15 @@ table {
     height: 28px !important;
 }
 
+.header {
+    background-color:lightgrey;
+}
+
+.list_table {
+    position:absolute;
+    margin:5px;
+}
+
 #topmenu {
     left:0;
     right:0;
@@ -62,16 +71,12 @@ table {
     color: lightgrey;
 }
 
-#links {
+#links_container {
     position:absolute;
-    right:410px;
-    top:0px;
+    right:0px;
     margin:0px;
 }
 
-#no_links {
-    margin-top: 9px;
-}
 
 #bottommenu {
     position:fixed;
@@ -90,18 +95,21 @@ table {
 }
 
 #project {
-    position: absolute;
+    position:absolute;
     right:205px;
-    top:0;
     display: block;
-    width: 200px;
     height: 34px;
     line-height: 1.42857143;
     color: black;
     background-color: lightgrey;
     background-image: none;
+}
+
+#project select {
+    background-color: lightgrey;
     border: 1px solid #ccc;
     border-radius: 4px;
+
 }
 
 #language select {

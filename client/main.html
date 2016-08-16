@@ -1,5 +1,5 @@
 <head>
-  <title>pentester</title>
+  <title>VulnReporter</title>
 </head>
 
 <body>
@@ -10,28 +10,27 @@
 
 
   <div id="topmenu" style="{{#unless loggedin}}display:none{{/unless}}">
-    <div>
-      <select id="project">
+    <div id="project">
+      <select>
+        <option value="" {{selectedProject ""}}>Wszystkie</option>
         {{#each projects}}
           <option title="{{_id}}" value="{{name}}" {{selectedProject name}}>{{name}}</option>
         {{/each}}
       </select>
+      <a href="/edit/project">{{_ "edit"}}</a>
     </div>
     {{> language}}
-    <div>
-      <div class="checkbox" id="links">
-        <label><input type="checkbox" id="no_links" value="" {{links_checked}}>{{_ "no_links"}}</label>
-      </div>
-    </div>
+
 
     <div id="menu">|
-    <a href="/">{{_ "list"}}</a> |
-    <a href="/new/vuln">{{_ "new_vuln"}}</a> |
-    <a href="/new/project">{{_ "new_project"}}</a> |
-    <a href="#" id="logout">{{_ "logout"}}</a> 
+      <a href="/">{{_ "list"}}</a> |
+      <a href="/export">{{_ "export"}}</a> |
+      <a href="/new/vuln">{{_ "new_vuln"}}</a> |
+      <a href="/new/project">{{_ "new_project"}}</a> |
+      <a href="#" id="logout">{{_ "logout"}}</a> 
     </div>
 
-    <b>{{_ "title"}}</b>
+    <b>{{_ "page_title"}}</b>
     
   </div>
 
@@ -56,12 +55,39 @@
   <div id="language">{{> i18n_dropdown}}</div>
 </template>
 
-<template name="list">
-
+<template name="export">
+    <div>
+      <div class="checkbox" id="links_container">
+        <label><input type="checkbox" id="links" value="" {{links_checked}}>{{_ "links"}}</label>
+      </div>
+    </div>
   {{#each vulns}}
     {{> vuln}}
   {{/each}}
 </template>
+
+<template name="list">
+
+  <table class="list_table">
+    <tr class="header">
+      <td>{{_ "no"}}</td>
+      <td>{{_ "title"}}</td>
+      <td>{{_ "importance"}}</td>
+      <td>CVSS</td>
+      {{#if showProjectName}}<td>{{_ "project"}}</td>{{/if}}
+    </tr>
+    {{#each vulns}}
+    <tr style="background-color:{{getImportanceRGB importance}}" class="hand" data-href="/edit/vuln/{{_id}}">
+      <td>{{@index}}</td>
+      <td>{{title}}</td>
+      <td>{{getImportanceName importance}}</td>
+      <td>{{score}}</td>
+      {{#if showProjectName}}<td>{{project}}</td>{{/if}}
+    </tr>
+    {{/each}}
+  </table>
+</template>
+
 
 
 <template name="vuln">
@@ -117,8 +143,8 @@
 
 <template name="edit_vuln">
   <!-- {{getvalue this}} -->
-  Tytuł: <input id="title" type="text" value="{{title}}" />
-  <br/>Projekt: <input id="projectname" type="text" value="{{project}}" />
+  {{_ "title"}}: <input id="title" type="text" value="{{title}}" />
+  <br/>{{_ "project"}}: <input id="projectname" type="text" value="{{project}}" />
   
   {{> edit_cvss3}}<br/>
 

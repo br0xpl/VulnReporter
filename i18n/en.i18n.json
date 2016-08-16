@@ -43,6 +43,10 @@
     "i_medium": "Medium",
     "i_low": "Low",
     "i_info": "Informational",
-    "title": "VulnReporter",
-    "no_links": "No links"
+    "page_title": "VulnReporter",
+    "links": "Edit links",
+    "title": "Title",
+    "no": "No.",
+    "project": "Project",
+    "export": "Export"
 }

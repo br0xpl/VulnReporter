@@ -25,5 +25,9 @@
     "i_medium": "Średnia",
     "i_low": "Niska",
     "i_info": "Informacyjna",
-    "no_links": "Bez linków"
+    "links": "Linki do edycji",
+    "title": "Tytuł",
+    "no": "Lp.",
+    "project": "Projekt",
+    "export": "Eksportuj"
 }
