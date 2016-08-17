@@ -9,7 +9,7 @@
     "ui": "User Interaction",
     "s": "Scope",
     "ci": "Confidentiality Impact",
-    "ii": "Integration Impact",
+    "ii": "Integrity Impact",
     "ai": "Availbility Impact",
     "network": "Network",
     "adj_net": "Adjacent Network",
