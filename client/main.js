@@ -149,12 +149,23 @@ Template.main.events({
     'click #logout'(event, instance) {
         Meteor.logout();
     },
-    'change #links'(event, instance) {
-        Session.set("links", $('#links')[0].checked);
-    },
     'click .vuln'(events, instance) {
         if (Session.get("links")) {
             Router.go("/edit/vuln/"+this._id);
+        }
+    },
+});
+
+Template.export.events({
+    'change #links'(event, instance) {
+        Session.set("links", $('#links')[0].checked);
+    },
+    'click #select_copy'(event, instance) {
+        selectText('selectable');
+        try {
+            document.execCommand('copy');
+        } catch (err) {
+            console.log('Oops, unable to copy');
         }
     },
 });
@@ -277,15 +288,12 @@ Handlebars.registerHelper('getImportanceRGB', function (i) {
     return "RGB(255,"+GB.toString()+","+GB.toString()+")";
 });
 
-Template.list.helpers({
-    showProjectName: function() {
-        return (Session.get("project")=="");
-    }
-});
-
 Template.list.events({
     'click .hand'(event, instance) {
         Router.go($(event.target.parentElement).data("href"));
+    },
+    'click .project_link'(event, instance) {
+        Session.set("project", event.target.innerText);
     },
 });
 
@@ -403,17 +411,51 @@ Router.route('export', {
 });
 
 
-Handlebars.registerHelper('vulns', function () {
+var vulns = function(project) {
     projectDeps.depend();
-    if (Session.get("project")=="") return Vulns.find({ }, {sort: {importance: -1, score: -1}}).fetch(); 
-    return Vulns.find({ project: Session.get("project") }, {sort: {importance: -1, score: -1}}).fetch(); 
+    if (project=="") return Vulns.find({ }, {sort: {importance: -1, score: -1}}).fetch(); 
+    return Vulns.find({ "project": project }, {sort: {importance: -1, score: -1}}).fetch(); 
+};
+
+var selectText = function (containerid) {
+    if (document.selection) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(document.getElementById(containerid));
+        range.select();
+    } else if (window.getSelection) {
+        var range = document.createRange();
+        range.selectNode(document.getElementById(containerid));
+        window.getSelection().addRange(range);
+    }
+};
+
+Template.export.helpers({
+    vulns: function() {
+        console.log(Session.get("project"));
+        return vulns(Session.get("project"));
+    },
 });
 
-// Template.list.helpers({
-//     vulns: function() {
-//         return Vulns.find({ project: Session.get("project") }, {sort: {importance: -1}}).fetch(); 
-//     }, 
-// });
+
+Template.list.helpers({
+    projects: function() {
+        if (Session.get("project")=="") {
+            var ret = [];
+            console.log("JEST");
+            Projects.find({}).fetch().forEach(function (p) {
+                console.log(JSON.stringify(p));
+                ret.push(p.name);
+            });
+            console.log(ret);
+            return ret;
+        } else {
+            return [ Session.get("project") ];
+        } 
+    },
+    vulns: function(name) {
+        return vulns(name);
+    }
+});
 
 Template.export.helpers({
     links_checked: function() {

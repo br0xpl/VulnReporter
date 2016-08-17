@@ -50,5 +50,6 @@
     "project": "Project",
     "export": "Export",
     "cve": "CVE",
-    "owasptop10": "OWASP TOP 10"
+    "owasptop10": "OWASP TOP 10",
+    "select_copy": "Select all and copy"
 }

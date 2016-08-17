@@ -56,36 +56,43 @@
 </template>
 
 <template name="export">
-    <div>
-      <div class="checkbox" id="links_container">
-        <label><input type="checkbox" id="links" value="" {{links_checked}}>{{_ "links"}}</label>
-      </div>
-    </div>
+  <div id="selectable">
   {{#each vulns}}
     {{> vuln}}
   {{/each}}
+  </div>
+
+  <div id="bottommenu">
+      <div class="checkbox" id="links_container">
+        <label><input type="checkbox" id="links" value="" {{links_checked}}>{{_ "links"}}</label>
+      </div>
+      <button id="select_copy">{{_ "select_copy"}}</button>
+    </div>
+  
 </template>
 
 <template name="list">
 
+
+  {{#each projects}}
+  <a class="project_link" href="#">{{this}}</a>
   <table class="list_table">
     <tr class="header">
       <td>{{_ "no"}}</td>
       <td>{{_ "title"}}</td>
       <td>{{_ "importance"}}</td>
       <td>CVSS</td>
-      {{#if showProjectName}}<td>{{_ "project"}}</td>{{/if}}
     </tr>
-    {{#each vulns}}
+    {{#each vulns this}}
     <tr style="background-color:{{getImportanceRGB importance}}" class="hand" data-href="/edit/vuln/{{_id}}">
       <td>{{@index}}</td>
       <td>{{title}}</td>
       <td>{{getImportanceName importance}}</td>
       <td>{{score}}</td>
-      {{#if showProjectName}}<td>{{project}}</td>{{/if}}
     </tr>
     {{/each}}
   </table>
+  {{/each}}
 </template>
 
 

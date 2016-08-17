@@ -29,5 +29,6 @@
     "title": "Tytuł",
     "no": "Lp.",
     "project": "Projekt",
-    "export": "Eksportuj"
+    "export": "Eksportuj",
+    "select_copy": "Zaznacz wszystko i kopiuj"
 }
