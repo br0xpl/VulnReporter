@@ -328,6 +328,8 @@ setupSummernote = function(id) {
             ['font', ['strikethrough', 'superscript', 'subscript']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['height', ['height']],
+            ['insert', ['picture','link','video','table','hr']],
+            ['misc',['undo','redo','codeview']],
         ],
         callbacks: {
         onKeyup: function(e) {
