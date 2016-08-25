@@ -318,7 +318,18 @@ Template.edit_vuln.helpers({
 });
 
 setupSummernote = function(id) {
-    $('#'+id).summernote({callbacks: {
+    $('#'+id).summernote({
+        toolbar: [
+            // [groupName, [list of button]]
+            ['style', ['style']],
+            ['font', ['fontname']],
+            ['size', ['fontsize']],
+            ['text', ['bold', 'italic', 'underline', 'color', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+        ],
+        callbacks: {
         onKeyup: function(e) {
             var data = Blaze.getData($("#"+this.id)[0]);
             data.content = $('#'+this.id).summernote('code');
